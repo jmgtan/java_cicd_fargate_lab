@@ -3,10 +3,10 @@ environment_variables:
   plaintext:
     AWS_DEFAULT_REGION: "us-east-1"
     SNS_TOPIC_ARN: "arn:aws:sns:us-east-1:284546856933:devops_demo_post_build"
-    PRE_SNS_SUBJECT: "Build Started: $CODEBUILD_SOURCE_VERSION"
-    PRE_SNS_MESSAGE: "Build has started for source revision: $CODEBUILD_SOURCE_VERSION"
-    POST_SNS_SUBJECT: "Build Completed: $CODEBUILD_SOURCE_VERSION"
-    POST_SNS_MESSAGE: "Build has completed for source revision: $CODEBUILD_SOURCE_VERSION"
+    PRE_SNS_SUBJECT: "Build Started: $CODEBUILD_BUILD_ID"
+    PRE_SNS_MESSAGE: "Build has started: $CODEBUILD_BUILD_ID"
+    POST_SNS_SUBJECT: "Build Completed: $CODEBUILD_BUILD_ID"
+    POST_SNS_MESSAGE: "Build has completed: $CODEBUILD_BUILD_ID"
 phases:
   build:
     commands:
