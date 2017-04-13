@@ -3,18 +3,14 @@ environment_variables:
   plaintext:
     AWS_DEFAULT_REGION: "us-east-1"
     SNS_TOPIC_ARN: "arn:aws:sns:us-east-1:284546856933:devops_demo_post_build"
-    PRE_SNS_SUBJECT: "Build Started: $CODEBUILD_BUILD_ID"
-    PRE_SNS_MESSAGE: "Build has started: $CODEBUILD_BUILD_ID"
-    POST_SNS_SUBJECT: "Build Completed: $CODEBUILD_BUILD_ID"
-    POST_SNS_MESSAGE: "Build has completed: $CODEBUILD_BUILD_ID"
 phases:
   build:
     commands:
-      - aws sns publish --topic-arn $SNS_TOPIC_ARN --subject "$PRE_SNS_SUBJECT" --message "$PRE_SNS_MESSAGE"
+      - aws sns publish --topic-arn $SNS_TOPIC_ARN --subject "Build has started $CODEBUILD_SOURCE_VERSION" --message "Build has started $CODEBUILD_SOURCE_VERSION"
       - mvn package
   post_build:
     commands:
-      - aws sns publish --topic-arn $SNS_TOPIC_ARN --subject "$POST_SNS_SUBJECT" --message "$POST_SNS_MESSAGE"
+      - aws sns publish --topic-arn $SNS_TOPIC_ARN --subject "Build has completed $CODEBUILD_SOURCE_VERSION" --message "Build has completed $CODEBUILD_SOURCE_VERSION"
 artifacts:
   files:
     - target/demo-0.0.1-SNAPSHOT.jar
