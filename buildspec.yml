@@ -5,11 +5,11 @@ environment_variables:
 phases:
   build:
     commands:
-      - aws sns publish --topic-arn $SNS_TOPIC_ARN --subject "Build Started: $$CODEBUILD_SOURCE_VERSION" --message "Build has started for source revision $$CODEBUILD_SOURCE_VERSION."
+      - aws sns publish --topic-arn $SNS_TOPIC_ARN --subject "Build Started: `$CODEBUILD_SOURCE_VERSION`" --message "Build has started for source revision `$CODEBUILD_SOURCE_VERSION`."
       - mvn package
   post_build:
     commands:
-      - aws sns publish --topic-arn $SNS_TOPIC_ARN --subject "Build Completed: $$CODEBUILD_SOURCE_VERSION" --message "Build has completed for source revision $$CODEBUILD_SOURCE_VERSION."
+      - aws sns publish --topic-arn $SNS_TOPIC_ARN --subject "Build Completed: `$CODEBUILD_SOURCE_VERSION`" --message "Build has completed for source revision `$CODEBUILD_SOURCE_VERSION.`"
 artifacts:
   files:
     - target/demo-0.0.1-SNAPSHOT.jar
