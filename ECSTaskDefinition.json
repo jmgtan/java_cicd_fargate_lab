@@ -1,0 +1,31 @@
+{
+  "family": "devops-demo",
+  "executionRoleArn": "arn:aws:iam::284546856933:role/ecsTaskExecutionRole",
+  "memory": "2GB",
+  "cpu": "1 vcpu",
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "containerDefinitions": [
+    {
+      "name": "devops-demo",
+      "image": "284546856933.dkr.ecr.us-east-1.amazonaws.com/devops_demo:latest",
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "MYSQL_HOST",
+          "value": "devopsdemo.cgcezlvx3a4b.us-east-1.rds.amazonaws.com"
+        },
+        {
+          "name": "MYSQL_PASSWORD",
+          "value": "root1234"
+        }
+      ]
+    }
+  ]
+}

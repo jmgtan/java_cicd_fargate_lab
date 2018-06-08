@@ -1,16 +1,26 @@
-version: 0.1
-environment_variables:
-  plaintext:
-    AWS_DEFAULT_REGION: "us-east-1"
-    SNS_TOPIC_ARN: "arn:aws:sns:us-east-1:284546856933:devops_demo_post_build"
+version: 0.2
+
 phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --region us-east-1 --no-include-email)
+      - REPOSITORY_URI=284546856933.dkr.ecr.us-east-1.amazonaws.com/devops_demo
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
   build:
     commands:
-      - aws sns publish --topic-arn $SNS_TOPIC_ARN --subject "Build has started $CODEBUILD_SOURCE_VERSION" --message "Build has started $CODEBUILD_SOURCE_VERSION"
+      - echo Build started on `date`
+      - echo Building the Docker image...
       - mvn package
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
-      - aws sns publish --topic-arn $SNS_TOPIC_ARN --subject "Build has completed $CODEBUILD_SOURCE_VERSION" --message "Build has completed $CODEBUILD_SOURCE_VERSION"
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name":"devops-demo","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
-  files:
-    - target/demo-0.0.1-SNAPSHOT.jar
+    files: imagedefinitions.json
