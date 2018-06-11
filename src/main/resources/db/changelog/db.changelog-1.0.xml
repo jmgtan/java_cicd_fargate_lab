@@ -35,4 +35,52 @@
             <column name="lastname" value="Doe" />
         </insert>
     </changeSet>
+    <changeSet id="CreateTaskTables" author="jan">
+        <preConditions onFail="HALT">
+            <not>
+                <tableExists tableName="todo_lists" />
+                <tableExists tableName="todo_items" />
+            </not>
+        </preConditions>
+        <createTable tableName="todo_lists">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_TODO_LISTS" />
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="todo_items">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_TODO_ITEMS" />
+            </column>
+            <column name="todo_list_id" type="int">
+                <constraints nullable="false" foreignKeyName="FK_TODO_ITEMS_1" referencedTableName="todo_lists" referencedColumnNames="id" />
+            </column>
+            <column name="description" type="varchar(500)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="InsertDefaultTasks" author="jan">
+        <preConditions onFail="HALT">
+            <tableExists tableName="todo_lists" />
+            <tableExists tableName="todo_items" />
+        </preConditions>
+        <insert tableName="todo_lists">
+            <column name="name" value="TODO" />
+        </insert>
+        <insert tableName="todo_items">
+            <column name="todo_list_id" valueComputed="(select id from todo_lists where name='TODO' order by id asc limit 1)" />
+            <column name="description" value="Pick up dry cleaning." />
+        </insert>
+        <insert tableName="todo_items">
+            <column name="todo_list_id" valueComputed="(select id from todo_lists where name='TODO' order by id asc limit 1)" />
+            <column name="description" value="Buy eggs." />
+        </insert>
+        <insert tableName="todo_items">
+            <column name="todo_list_id" valueComputed="(select id from todo_lists where name='TODO' order by id asc limit 1)" />
+            <column name="description" value="Buy milk." />
+        </insert>
+    </changeSet>
 </databaseChangeLog>
