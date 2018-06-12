@@ -9,7 +9,7 @@
     </head>
     <body>
         <div class="container">
-            <div th:each="todoList : ${todoLists}">
+            <div th:each="todoList : ${todoLists}" class="mt-4">
                 <h1 class="display-4" th:text="${todoList.name}"></h1>
                 <table class="table table-striped table-sm">
                     <tbody>
@@ -30,6 +30,12 @@
                         <button type="submit" class="btn btn-primary">Add Task Item</button>
                     </form>
                 </div>
+            </div>
+            <div class="border-top pt-4 mt-4">
+                <form class="form-inline" action="/create-task-list" method="post" th:object="${todoListForm}">
+                    <input type="text" placeholder="List Name" required="required" th:field="*{name}" class="form-control mr-2" />
+                    <button type="submit" class="btn btn-primary">Create List</button>
+                </form>
             </div>
         </div>
     </body>

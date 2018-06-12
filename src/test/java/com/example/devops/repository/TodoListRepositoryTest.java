@@ -1,6 +1,6 @@
 package com.example.devops.repository;
 
-import com.example.devops.entity.User;
+import com.example.devops.entity.TodoList;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,13 +14,13 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles({"hsqldb"})
-public class UserRepositoryTest {
+public class TodoListRepositoryTest {
     @Autowired
-    private UserRepository userRepository;
+    private TodoListRepository todoListRepository;
 
     @Test
     public void findAllTest() {
-        List<User> users = userRepository.findAll();
-        Assert.assertTrue(users.size() > 0);
+        List<TodoList> todoLists = todoListRepository.findAll();
+        Assert.assertTrue(todoLists.size() > 0);
     }
 }

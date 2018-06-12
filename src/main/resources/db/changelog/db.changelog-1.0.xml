@@ -83,4 +83,10 @@
             <column name="description" value="Buy milk." />
         </insert>
     </changeSet>
+    <changeSet id="DropUserTable" author="jan">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="users" />
+        </preConditions>
+        <dropTable tableName="users" />
+    </changeSet>
 </databaseChangeLog>

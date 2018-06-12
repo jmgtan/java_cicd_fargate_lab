@@ -3,10 +3,8 @@ package com.example.devops.controller;
 import com.example.devops.controller.entity.TodoItemForm;
 import com.example.devops.entity.TodoItem;
 import com.example.devops.entity.TodoList;
-import com.example.devops.entity.User;
 import com.example.devops.repository.TodoItemRepository;
 import com.example.devops.repository.TodoListRepository;
-import com.example.devops.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +40,7 @@ public class HomeController {
         model.addAttribute("todoLists", todoLists);
         model.addAttribute("todoItemsMap", todoItemsMap);
         model.addAttribute("todoItemForm", new TodoItemForm());
+        model.addAttribute("todoListForm", new TodoList());
         return "index";
     }
 
@@ -63,6 +62,13 @@ public class HomeController {
     @Transactional
     public String deleteTaskItem(@PathVariable("todoItemId") int todoItemId) {
         todoItemRepository.delete(todoItemId);
+        return "redirect:/home";
+    }
+
+    @RequestMapping(value = "/create-task-list", method = RequestMethod.POST)
+    @Transactional
+    public String createTaskList(@ModelAttribute TodoList todoList) {
+        todoListRepository.save(todoList);
         return "redirect:/home";
     }
 }
