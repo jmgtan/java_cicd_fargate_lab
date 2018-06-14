@@ -65,10 +65,10 @@ public class HomeController {
         return "redirect:/home";
     }
 
-    @RequestMapping(value = "/create-task-list", method = RequestMethod.POST)
-    @Transactional
-    public String createTaskList(@ModelAttribute TodoList todoList) {
-        todoListRepository.save(todoList);
-        return "redirect:/home";
-    }
+//    @RequestMapping(value = "/create-task-list", method = RequestMethod.POST)
+//    @Transactional
+//    public String createTaskList(@ModelAttribute TodoList todoList) {
+//        todoListRepository.save(todoList);
+//        return "redirect:/home";
+//    }
 }
